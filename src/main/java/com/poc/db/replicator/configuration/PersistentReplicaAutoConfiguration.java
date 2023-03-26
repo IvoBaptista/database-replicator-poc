@@ -1,4 +1,4 @@
-package com.test.db.replicator.configuration;
+package com.poc.db.replicator.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 @Configuration
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(
-        basePackages = "com.test.db.replicator.replica",
+        basePackages = "com.poc.db.replicator.replica",
         entityManagerFactoryRef = "replicaEntityManager",
         transactionManagerRef = "replicaTransactionManager")
 public class PersistentReplicaAutoConfiguration {
@@ -33,7 +33,7 @@ public class PersistentReplicaAutoConfiguration {
     public LocalContainerEntityManagerFactoryBean replicaEntityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(replicaDataSource());
-        em.setPackagesToScan("com.test.db.replicator.replica");
+        em.setPackagesToScan("com.poc.db.replicator.replica");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

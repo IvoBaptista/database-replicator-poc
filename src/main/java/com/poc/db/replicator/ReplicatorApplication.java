@@ -1,14 +1,13 @@
-package com.test.db.replicator;
+package com.poc.db.replicator;
 
-import com.test.db.replicator.db.Product;
-import com.test.db.replicator.db.ProductRepository;
-import com.test.db.replicator.replica.ProductReplica;
-import com.test.db.replicator.replica.ProductReplicaRepository;
+import com.poc.db.replicator.db.Product;
+import com.poc.db.replicator.db.ProductRepository;
+import com.poc.db.replicator.replica.ProductReplica;
+import com.poc.db.replicator.replica.ProductReplicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 

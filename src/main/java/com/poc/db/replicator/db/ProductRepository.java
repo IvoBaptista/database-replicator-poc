@@ -1,4 +1,4 @@
-package com.test.db.replicator.db;
+package com.poc.db.replicator.db;
 
 import org.springframework.data.repository.Repository;
 

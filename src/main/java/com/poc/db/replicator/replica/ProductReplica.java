@@ -1,4 +1,4 @@
-package com.test.db.replicator.replica;
+package com.poc.db.replicator.replica;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
