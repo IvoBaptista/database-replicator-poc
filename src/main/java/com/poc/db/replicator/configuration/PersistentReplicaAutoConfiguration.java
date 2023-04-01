@@ -47,7 +47,7 @@ public class PersistentReplicaAutoConfiguration {
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix="spring.replica-datasource")
+    @ConfigurationProperties(prefix = "spring.replica-datasource")
     public DataSource replicaDataSource() {
         return DataSourceBuilder.create().build();
     }

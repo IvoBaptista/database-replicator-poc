@@ -47,7 +47,7 @@ public class PersistentDbAutoConfiguration {
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix="spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dbDataSource() {
         return DataSourceBuilder.create().build();
     }

@@ -1,70 +1,38 @@
 package com.poc.db.replicator;
 
-import com.poc.db.replicator.db.Product;
-import com.poc.db.replicator.db.ProductRepository;
-import com.poc.db.replicator.replica.ProductReplica;
-import com.poc.db.replicator.replica.ProductReplicaRepository;
+import com.poc.db.replicator.service.ReplicationEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @SpringBootApplication
 @EnableTransactionManagement
 public class ReplicatorApplication implements CommandLineRunner {
-	@Autowired
-	ProductRepository repo;
 
-	@Autowired
-	ProductReplicaRepository replicaRepo;
-	public static void main(String[] args) {
-		SpringApplication.run(ReplicatorApplication.class, args);
-	}
+    @Autowired
+    ReplicationEngine replicationEngine;
+    @Autowired
+    ApplicationContext ctx;
 
-	@Override
-	@Transactional("dbTransactionManager")
-	public void run(String... args) throws Exception {
+    public static void main(String[] args) {
+        SpringApplication.run(ReplicatorApplication.class, args);
+    }
 
-		long epochStart = System.nanoTime();
-		System.out.println(repo.toString());
+    @Override
+    public void run(String... args) throws Exception {
 
-		List<Product> prodList = repo.findAll();
-		int i = 0;
-		for(Product prod : prodList) {
-			++i;
-			System.out.println("Prod: " + i + ", name: " + prod.getDesignation() + ", stock: " + prod.getStock());
-		}
+        long epochStart = System.nanoTime();
 
-		replicateProducts(prodList);
-
-		long epochEnd = System.nanoTime();
-		System.out.println("Success: " + (epochEnd - epochStart)/1000000000 + "s");
-	}
+        replicationEngine.replicateProductEntities();
 
 
-	@Transactional("replicaTransactionManager")
-	private void replicateProducts(List<Product> products) {
-		List<ProductReplica> replicas = new LinkedList<>();
-		for(Product prod : products) {
-			ProductReplica replica = new ProductReplica(prod.getWarehouse(),
-					prod.getBarCode(),
-					prod.getDesignation(),
-					prod.getCategory(),
-					prod.getSubCategory(),
-					prod.getPrice(),
-					prod.getStock(),
-					prod.getRefs()
-			);
-			replicas.add(replica);
-		}
+        long epochEnd = System.nanoTime();
+        System.out.println("Success: " + ((double)epochEnd - (double)epochStart) / 1000000000.0 + "s");
+    }
 
-		replicaRepo.saveAll(replicas);
-	}
 
 }
 
