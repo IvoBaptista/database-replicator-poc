@@ -6,11 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-public class ReplicatorApplication implements CommandLineRunner {
+@EnableScheduling
+public class ReplicatorApplication {
 
     @Autowired
     ReplicationEngine replicationEngine;
@@ -20,7 +22,7 @@ public class ReplicatorApplication implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(ReplicatorApplication.class, args);
     }
-
+    /*
     @Override
     public void run(String... args) throws Exception {
 
@@ -32,7 +34,7 @@ public class ReplicatorApplication implements CommandLineRunner {
         long epochEnd = System.nanoTime();
         System.out.println("Success: " + ((double)epochEnd - (double)epochStart) / 1000000000.0 + "s");
     }
-
+    */
 
 }
 
