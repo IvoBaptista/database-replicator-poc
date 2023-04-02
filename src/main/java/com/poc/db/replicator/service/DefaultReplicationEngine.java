@@ -4,10 +4,15 @@ import com.poc.db.replicator.db.Product;
 import com.poc.db.replicator.db.ProductRepository;
 import com.poc.db.replicator.replica.ProductReplica;
 import com.poc.db.replicator.replica.ProductReplicaRepository;
+import com.poc.db.replicator.replica.ReplicationLog;
+import com.poc.db.replicator.replica.ReplicationLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
+import java.time.OffsetTime;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,10 +22,23 @@ import java.util.List;
 public class DefaultReplicationEngine implements ReplicationEngine {
     private final ProductReplicaRepository productReplicaRepository;
     private final ProductRepository productRepository;
+    private final ReplicationLogger replicationLogger;
 
     @Override
     public void replicateProductEntities() {
-        replicateProducts(extractOriginalProducts());
+
+        try {
+            replicationLogger.startLog();
+
+            List<Product> orignalProdList = extractOriginalProducts();
+            replicationLogger.updateStatus(ReplicationLogger.LogStatus.EXTRACTED);
+            replicateProducts(orignalProdList);
+
+            replicationLogger.finishLog();
+        } catch (Exception exception) {
+            replicationLogger.abortLog(exception.getMessage());
+        }
+
     }
 
     @Transactional("dbTransactionManager")
